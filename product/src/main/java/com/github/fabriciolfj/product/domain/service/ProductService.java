@@ -2,6 +2,7 @@ package com.github.fabriciolfj.product.domain.service;
 
 import com.github.fabriciolfj.product.api.dto.request.ProductRequestDTO;
 import com.github.fabriciolfj.product.api.dto.response.ProductResponseDTO;
+import com.github.fabriciolfj.product.api.exceptions.ProductNotFoundException;
 import com.github.fabriciolfj.product.api.mapper.ProductMapperRequest;
 import com.github.fabriciolfj.product.api.mapper.ProductMapperResponse;
 import com.github.fabriciolfj.product.domain.repository.ProductRepository;

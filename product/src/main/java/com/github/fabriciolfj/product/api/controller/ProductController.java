@@ -2,6 +2,7 @@ package com.github.fabriciolfj.product.api.controller;
 
 import com.github.fabriciolfj.product.api.dto.request.ProductRequestDTO;
 import com.github.fabriciolfj.product.api.dto.response.ProductResponseDTO;
+import com.github.fabriciolfj.product.api.exceptions.ProductCreateException;
 import com.github.fabriciolfj.product.api.exceptions.ProductNotFoundException;
 import com.github.fabriciolfj.product.domain.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,7 @@ public class ProductController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Mono<ProductResponseDTO> findByCode(@PathVariable("code") final String code) {
         return service.findByCode(code)
-                .switchIfEmpty(Mono.error(new ProductNotFoundException("Product not found")))
-                .onErrorResume(e -> Mono.error(new ProductNotFoundException("Product not found")));
+                .switchIfEmpty(Mono.error(new ProductNotFoundException("Product not found")));
     }
 
     @GetMapping
@@ -46,7 +46,8 @@ public class ProductController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO dto) {
-        return service.create(dto);
+        return service.create(dto)
+                .onErrorResume(e -> Mono.error(new ProductCreateException("Fail create product. Details: " + e.getMessage())));
     }
 
     @PutMapping("/{code}")
