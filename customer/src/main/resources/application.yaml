@@ -1,0 +1,20 @@
+server:
+  port: 9290
+spring:
+  application:
+    name: customer
+  datasource:
+    url: jdbc:mysql://localhost:3306/customer
+    username: root
+    password: root
+  flyway:
+    locations:
+      - classpath:db/migration
+      - classpath:db/testdata
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+    show-sql: true
