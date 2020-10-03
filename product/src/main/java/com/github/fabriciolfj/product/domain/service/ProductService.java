@@ -5,6 +5,7 @@ import com.github.fabriciolfj.product.api.dto.response.ProductResponseDTO;
 import com.github.fabriciolfj.product.api.exceptions.ProductNotFoundException;
 import com.github.fabriciolfj.product.api.mapper.ProductMapperRequest;
 import com.github.fabriciolfj.product.api.mapper.ProductMapperResponse;
+import com.github.fabriciolfj.product.domain.model.enuns.Status;
 import com.github.fabriciolfj.product.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -34,6 +35,15 @@ public class ProductService {
 
     public Flux<ProductResponseDTO> findAll() {
         return repository.findAll().flatMap(p -> Flux.just(response.toDTO(p)));
+    }
+
+    public Mono<Void> updateStatus(final String code, final String value) {
+        return repository.findByCode(code)
+                .flatMap(p -> {
+                    var status = Status.toEnum(value);
+                    p.setStatus(status.getDescription());
+                    return repository.save(p);
+                }).flatMap(r -> Mono.empty());
     }
 
     public Mono<ProductResponseDTO> create(final ProductRequestDTO dto) {

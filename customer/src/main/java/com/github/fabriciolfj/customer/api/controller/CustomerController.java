@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -26,6 +28,12 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Customer findByCode(@PathVariable("code") final String code) {
         return customerService.findByCode(code);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<Customer> findAll() {
+        return customerService.findAll();
     }
 
     @PutMapping("/{code}")

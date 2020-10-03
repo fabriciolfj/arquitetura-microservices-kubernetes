@@ -1,1 +1,38 @@
-
+server:
+  port: 9091
+spring:
+  application:
+    name: customer
+  datasource:
+    url: jdbc:mysql://localhost:3306/orders?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: root
+  flyway:
+    locations:
+      - classpath:db/migration
+      - classpath:db/testdata
+  cloud:
+    stream:
+      binders:
+        kafka:
+          type: kafka
+      bindings:
+        output-estoque:
+          destination: topic-order-estoque
+          group: '${spring.application.name}'
+        input-status:
+          destination: topic-order-status
+          group: '${spring.application.name}'
+      kafka:
+        input-status:
+          destination: topic-order-status
+          group: '${spring.application.name}'
+          consumer:
+            autoCommitOffset: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+    show-sql: true

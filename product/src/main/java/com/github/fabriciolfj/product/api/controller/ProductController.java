@@ -4,6 +4,7 @@ import com.github.fabriciolfj.product.api.dto.request.ProductRequestDTO;
 import com.github.fabriciolfj.product.api.dto.response.ProductResponseDTO;
 import com.github.fabriciolfj.product.api.exceptions.ProductCreateException;
 import com.github.fabriciolfj.product.api.exceptions.ProductNotFoundException;
+import com.github.fabriciolfj.product.api.exceptions.StatusNotFoundException;
 import com.github.fabriciolfj.product.domain.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -62,8 +63,18 @@ public class ProductController {
         return service.deleteByCode(code);
     }
 
+    @PutMapping("/{code}/{status}")
+    public Mono<Void> updateStatus(@PathVariable("code") final String code, @PathVariable("status") final String status) {
+        return service.updateStatus(code, status);
+    }
+
     @ExceptionHandler
     public ResponseEntity<String> handle(final ProductNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handle(final StatusNotFoundException e ) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 

@@ -27,4 +27,5 @@ public class Product {
     private String code;
     private String name;
     private BigDecimal price;
+    private String status;
 }
