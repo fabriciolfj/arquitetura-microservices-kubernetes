@@ -1,6 +1,7 @@
 package com.github.fabriciolfj.inventario.api.exceptions.api;
 
 import com.github.fabriciolfj.inventario.api.exceptions.DomainBusinessException;
+import com.github.fabriciolfj.inventario.api.exceptions.InfrastructureException;
 import com.github.fabriciolfj.inventario.api.exceptions.NotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;

@@ -13,6 +13,10 @@ import java.time.format.DateTimeFormatter;
 public class CustomLocalDateDeserializer extends StdDeserializer<LocalDate> {
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    protected CustomLocalDateDeserializer() {
+        super(LocalDate.class);
+    }
+
     protected CustomLocalDateDeserializer(JavaType valueType) {
         super(valueType);
     }

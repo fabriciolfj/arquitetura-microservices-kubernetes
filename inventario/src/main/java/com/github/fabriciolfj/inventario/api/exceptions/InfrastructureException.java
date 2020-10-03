@@ -1,4 +1,4 @@
-package com.github.fabriciolfj.inventario.api.exceptions.api;
+package com.github.fabriciolfj.inventario.api.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

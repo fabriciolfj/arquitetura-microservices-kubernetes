@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -17,6 +19,7 @@ public class Product {
     private Long id;
     private String code;
     private Integer quantity;
+    private LocalDate mov;
 
     public void addQuantity(final Integer quantity) {
         this.quantity += quantity;

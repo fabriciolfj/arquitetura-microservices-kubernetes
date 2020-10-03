@@ -11,15 +11,25 @@ spring:
   kafka:
     bootstrap-servers:
       - localhost:9092
-    consumer:
-      group-id: inventario
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      auto-offset-reset: earliest
-      enable-auto-commit: false
-    listener:
-      missing-topics-fatal: false
-      ack-mode: MANUAL_IMMEDIATE
+  cloud:
+    stream:
+      binders:
+        kafka:
+          type: kafka
+      bindings:
+        input-estoque:
+          destination: topic-order-estoque
+          group: '${spring.application.name}'
+        output-status:
+          destination: topic-order-status
+          group: '${spring.application.name}'
+      kafka:
+        input-estoque:
+          destination: topic-order-estoque
+          group: '${spring.application.name}'
+          consumer:
+            autoCommitOffset: true
 
 app:
   topic: topic-order-estoque
+  status: topic-order-status
