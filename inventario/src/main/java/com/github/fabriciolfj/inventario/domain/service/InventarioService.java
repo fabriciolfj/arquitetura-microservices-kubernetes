@@ -1,7 +1,5 @@
 package com.github.fabriciolfj.inventario.domain.service;
 
-import com.github.fabriciolfj.inventario.api.dto.request.ItemRequest;
-import com.github.fabriciolfj.inventario.api.dto.request.OrderRequest;
 import com.github.fabriciolfj.inventario.api.dto.request.ProductCreateRequest;
 import com.github.fabriciolfj.inventario.api.exceptions.DomainBusinessException;
 import com.github.fabriciolfj.inventario.api.exceptions.NotFoundException;

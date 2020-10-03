@@ -2,6 +2,7 @@ package com.github.fabriciolfj.inventario.domain.facade.patcher;
 
 import com.github.fabriciolfj.inventario.api.dto.request.OrderRequest;
 import com.github.fabriciolfj.inventario.api.exceptions.DomainBusinessException;
+import com.github.fabriciolfj.inventario.domain.entity.enuns.StatusOrder;
 import com.github.fabriciolfj.inventario.domain.message.OrderProducer;
 import com.github.fabriciolfj.inventario.domain.service.InventarioService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,17 @@ public class InventarioPatcher {
     private final OrderProducer orderProducer;
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Mono<Void> process(final OrderRequest request) {
+    public Mono<?> process(final OrderRequest request) {
         log.info("Iniciando processo do pedido: " + request);
+        return execute(request)
+                .doOnSuccess(r -> {
+                    orderProducer.send(request, StatusOrder.EMITIDO);
+                }).doOnError(e -> {
+                    orderProducer.send(request, StatusOrder.SEM_ESTOQUE);
+                }).log();
+    }
+
+    private Mono<Void> execute(OrderRequest request) {
         return Flux.fromIterable(request.getItems())
                 .timeout(Duration.ofSeconds(2))
                 .flatMap(value -> inventarioService.exitQuantity(value.getCode(), value.getQuantity(),  request.getDataEmissao()))
