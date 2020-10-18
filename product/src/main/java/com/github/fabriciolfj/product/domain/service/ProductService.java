@@ -2,6 +2,7 @@ package com.github.fabriciolfj.product.domain.service;
 
 import com.github.fabriciolfj.product.api.dto.request.ProductRequestDTO;
 import com.github.fabriciolfj.product.api.dto.response.ProductResponseDTO;
+import com.github.fabriciolfj.product.api.exceptions.ProductCreateException;
 import com.github.fabriciolfj.product.api.exceptions.ProductNotFoundException;
 import com.github.fabriciolfj.product.api.mapper.ProductMapperRequest;
 import com.github.fabriciolfj.product.api.mapper.ProductMapperResponse;
@@ -25,7 +26,8 @@ public class ProductService {
 
     public Mono<ProductResponseDTO> findByCode(final String code) {
         return repository.findByCode(code)
-                .flatMap(result -> Mono.just(response.toDTO(result)));
+                .flatMap(result -> Mono.just(response.toDTO(result)))
+                .switchIfEmpty(Mono.error(new ProductNotFoundException("Product not found")));
     }
 
     public Mono<Void> deleteByCode(final String code) {
@@ -53,7 +55,8 @@ public class ProductService {
                     p.setCode(UUID.randomUUID().toString());
                     return repository.save(p);
                 })
-                .flatMap(result -> Mono.just(response.toDTO(result)));
+                .flatMap(result -> Mono.just(response.toDTO(result)))
+                .onErrorResume(e -> Mono.error(new ProductCreateException("Fail create product. Details: " + e.getMessage())));
     }
 
     public Mono<ProductResponseDTO> update(final ProductRequestDTO dto, final String code) {

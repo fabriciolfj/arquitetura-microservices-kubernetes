@@ -1,4 +1,4 @@
-package com.github.fabriciolfj.order.domain.command;
+package com.github.fabriciolfj.order.domain.facade.pather;
 
 import com.github.fabriciolfj.order.domain.entity.Order;
 import com.github.fabriciolfj.order.domain.entity.enuns.Status;
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Component
-public class OrderCommandCreated {
+public class OrderPatcher {
 
     public Order execute(final Order order) {
         return updateData(order);
@@ -21,9 +21,7 @@ public class OrderCommandCreated {
     }
 
     private Order calcularItem(final Order order) {
-        order.getItems()
-                .forEach(i -> i.calcularTotal());
-
+        order.getItems().forEach(i -> i.calcularTotal());
         return calcularTotalOrder(order);
     }
 

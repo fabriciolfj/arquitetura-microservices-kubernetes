@@ -34,8 +34,7 @@ public class ProductController {
     @GetMapping("/{code}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Mono<ProductResponseDTO> findByCode(@PathVariable("code") final String code) {
-        return service.findByCode(code)
-                .switchIfEmpty(Mono.error(new ProductNotFoundException("Product not found")));
+        return service.findByCode(code);
     }
 
     @GetMapping
@@ -47,8 +46,7 @@ public class ProductController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO dto) {
-        return service.create(dto)
-                .onErrorResume(e -> Mono.error(new ProductCreateException("Fail create product. Details: " + e.getMessage())));
+        return service.create(dto);
     }
 
     @PutMapping("/{code}")

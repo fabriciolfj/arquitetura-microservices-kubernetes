@@ -4,7 +4,7 @@ package com.github.fabriciolfj.order.domain.facade.create;
 import com.github.fabriciolfj.order.api.dto.request.OrderRequest;
 import com.github.fabriciolfj.order.api.exceptions.CreateOrderException;
 import com.github.fabriciolfj.order.api.mapper.OrderRequestMapper;
-import com.github.fabriciolfj.order.domain.command.OrderCommandCreated;
+import com.github.fabriciolfj.order.domain.facade.pather.OrderPatcher;
 import com.github.fabriciolfj.order.domain.entity.Item;
 import com.github.fabriciolfj.order.domain.entity.Order;
 import com.github.fabriciolfj.order.domain.facade.fetcher.ProductFetcher;
@@ -22,13 +22,13 @@ public class OrderCreate {
 
     private final ProductFetcher productFetcher;
     private final OrderRequestMapper mapper;
-    private final OrderCommandCreated orderCommandCreated;
+    private final OrderPatcher orderPatcher;
 
     public Order create(final OrderRequest request) {
         return of(mapper.toOrder(request))
                 .map(order -> {
                     updatePriceItems(order.getItems());
-                    return orderCommandCreated.execute(order);
+                    return orderPatcher.execute(order);
                 }).orElseThrow(() -> new CreateOrderException(request));
     }
 
