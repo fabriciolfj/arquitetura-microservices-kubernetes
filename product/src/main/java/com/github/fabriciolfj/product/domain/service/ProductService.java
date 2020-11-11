@@ -8,7 +8,9 @@ import com.github.fabriciolfj.product.api.mapper.ProductMapperRequest;
 import com.github.fabriciolfj.product.api.mapper.ProductMapperResponse;
 import com.github.fabriciolfj.product.domain.model.enuns.Status;
 import com.github.fabriciolfj.product.domain.repository.ProductRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -16,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -35,8 +38,14 @@ public class ProductService {
                 .flatMap(result -> repository.delete(result));
     }
 
+    @CircuitBreaker(name = "list", fallbackMethod = "fallbackFindAll")
     public Flux<ProductResponseDTO> findAll() {
         return repository.findAll().flatMap(p -> Flux.just(response.toDTO(p)));
+    }
+
+    public Flux<ProductResponseDTO> fallbackFindAll(Throwable t) {
+        log.info("Fallback started");
+        return Flux.empty();
     }
 
     public Mono<Void> updateStatus(final String code, final String value) {
