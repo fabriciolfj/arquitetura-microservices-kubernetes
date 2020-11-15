@@ -21,7 +21,7 @@ public class EntregaCreate {
     private ItemMapper itemMapper;
 
     public Entrega create(final EntregaRequest request) {
-        var entrega = getEntregaRecebida(request);
+        var entrega = mapper.toEntity(request, StatusEntrega.RECEBIDA);
         entrega.itens = getItems(request, entrega);
         return entrega;
     }
@@ -32,11 +32,5 @@ public class EntregaCreate {
             i.entrega = entrega;
             return i;
         }).collect(Collectors.toList());
-    }
-
-    private Entrega getEntregaRecebida(EntregaRequest request) {
-        var entrega = mapper.toEntity(request);
-        entrega.statusEntrega = StatusEntrega.RECEBIDA;
-        return entrega;
     }
 }
