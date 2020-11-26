@@ -14,6 +14,7 @@ public interface EntregaMapper {
     @Mapping(target = "cliente", source = "request.cliente")
     @Mapping(target = "destino", source = "request.destino")
     @Mapping(target = "itens", source = "request.itens", ignore = true)
+    @Mapping(target = "order", source = "request.order")
     @ValueMapping(target = "statusEntrega", source = "RECEBIDA")
     Entrega toEntity(final EntregaRequest request, final StatusEntrega statusEntrega);
 }

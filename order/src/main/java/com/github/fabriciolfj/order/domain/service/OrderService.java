@@ -5,6 +5,7 @@ import com.github.fabriciolfj.order.api.dto.response.OrderResponse;
 import com.github.fabriciolfj.order.api.exceptions.OrderNotFoundException;
 import com.github.fabriciolfj.order.api.exceptions.OrderProcessException;
 import com.github.fabriciolfj.order.api.mapper.OrderResponseMapper;
+import com.github.fabriciolfj.order.domain.entity.enuns.Status;
 import com.github.fabriciolfj.order.domain.facade.create.OrderCreate;
 import com.github.fabriciolfj.order.domain.facade.fetcher.CustomerFetcher;
 import com.github.fabriciolfj.order.domain.integracao.message.EstoqueIntegration;
@@ -27,6 +28,14 @@ public class OrderService {
     private final OrderResponseMapper mapper;
     private final CustomerFetcher customerFetcher;
     private final EstoqueIntegration estoqueIntegration;
+
+    public void update(final String codeOrder) {
+        repository.findByCode(codeOrder)
+                .map(order -> {
+                    order.setStatus(Status.ENTREGUE);
+                    return repository.save(order);
+                }).orElseThrow(() -> new OrderNotFoundException(codeOrder));
+    }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public OrderResponse create(final OrderRequest request) {

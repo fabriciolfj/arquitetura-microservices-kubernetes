@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 @Getter
 @AllArgsConstructor
 public enum Status {
-    CRIADO("criado"), EMITIDO("emitido"), SEM_ESTOQUE("noestoque");
+    CRIADO("criado"), EMITIDO("emitido"), SEM_ESTOQUE("noestoque"), ENTREGUE("entrege");
 
     private String descricao;
 

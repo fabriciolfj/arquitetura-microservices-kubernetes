@@ -7,5 +7,6 @@ public class EntregaRequest {
     public String documento;
     public String cliente;
     public String destino;
+    public String order;
     public List<ItemRequest> itens;
 }

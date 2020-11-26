@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 @Getter
 public enum StatusEntrega {
 
-    RECEBIDA("recebida"), SAIDA_PARA_ENTREGA("saidaParaEntrega"), ENTREGUE("entregue");
+    RECEBIDA("recebida"), ENTREGUE("entregue");
 
     private String descricao;
 

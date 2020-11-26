@@ -19,6 +19,6 @@ public class Customer {
     private Long id;
     private String code;
     private String name;
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Address> addresses;
 }

@@ -23,7 +23,22 @@ spring:
         input-status:
           destination: topic-order-status
           group: '${spring.application.name}'
+        input-entrega:
+          destination: entrega
+          group: '${spring.application.name}'
+          producer:
+            partition-count: 1
+          consumer:
+            max-attempts: 5
+            back-off-max-interval: 30000
+            partitioned: true
+            concurrency: 10
       kafka:
+        input-entrega:
+          consumer:
+            autoCommitOffset: false
+          group: '${spring.application.name}'
+          destination: entrega
         input-status:
           destination: topic-order-status
           group: '${spring.application.name}'

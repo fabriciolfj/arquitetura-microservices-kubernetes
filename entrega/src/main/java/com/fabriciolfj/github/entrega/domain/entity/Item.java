@@ -3,6 +3,7 @@ package com.fabriciolfj.github.entrega.domain.entity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import lombok.*;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -25,6 +26,7 @@ public class Item extends PanacheEntityBase {
     public Integer quantidade;
     @ManyToOne
     @JoinColumn(name = "entrega_id")
+    @JsonbTransient
     public Entrega entrega;
 
 }

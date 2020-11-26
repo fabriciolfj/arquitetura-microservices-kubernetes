@@ -24,4 +24,10 @@ public class EntregaControler {
     public Response create(final EntregaRequest request) {
         return Response.ok(entregaService.save(request)).status(201).build();
     }
+
+    @POST
+    @Path(("/saida"))
+    public Response createExit(final EntregaRequest request) {
+        return Response.ok(entregaService.saveExit(request)).status(202).build();
+    }
 }
