@@ -36,7 +36,7 @@ public class ConsumerStatusOrder {
         }
 
         log.info("Entrega realizada: {}", message.getPayload());
-        /*var entrega = objectMapper.readValue(message, EntregaRequest.class);
-        orderService.update(entrega.getOrder());*/
+        var entrega = objectMapper.readValue(message.getPayload().toString(), EntregaRequest.class);
+        orderService.update(entrega.getOrder());
     }
 }

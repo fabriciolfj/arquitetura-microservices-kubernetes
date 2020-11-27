@@ -49,6 +49,7 @@ public class InventarioService {
                 .log()
                 .flatMap(product -> {
                     product.setQuantity(0);
+                    product.setMov(LocalDate.now());
                     return repository.save(product);
                 });
     }

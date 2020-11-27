@@ -1,3 +1,5 @@
+SET MODE MYSQL;
+
 create table orders (
 id bigint not null auto_increment,
 descricao varchar(100) not null,
