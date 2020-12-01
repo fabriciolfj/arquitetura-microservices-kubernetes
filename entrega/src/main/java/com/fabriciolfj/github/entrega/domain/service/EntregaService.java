@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.json.bind.JsonbBuilder;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 
@@ -47,11 +46,7 @@ public class EntregaService {
     public SaidaResponse saveExit(final EntregaRequest request) {
         var entrega = create.create(request);
         var entregas = entregaRepository.findEntregasRecebidas(request.documento);
-        var entregaValida = validation.validarSaida(entregas, entrega);
-
-        var json = JsonbBuilder.create();
-        json.toJson(entrega);
-        entregaIntegration.process(json.toJson(entregaValida));
+        entregaIntegration.process(validation.validarSaida(entregas, entrega));
         return SaidaResponse
                 .builder()
                 .dataExit(LocalDate.now())
