@@ -4,6 +4,7 @@ import com.github.fabriciolfj.product.api.dto.request.ProductRequestDTO;
 import com.github.fabriciolfj.product.api.dto.response.ProductResponseDTO;
 import com.github.fabriciolfj.product.api.exceptions.ProductCreateException;
 import com.github.fabriciolfj.product.api.exceptions.ProductNotFoundException;
+import com.github.fabriciolfj.product.api.exceptions.ProductUpdateException;
 import com.github.fabriciolfj.product.api.mapper.ProductMapperRequest;
 import com.github.fabriciolfj.product.api.mapper.ProductMapperResponse;
 import com.github.fabriciolfj.product.domain.model.enuns.Status;
@@ -48,13 +49,14 @@ public class ProductService {
         return Flux.empty();
     }
 
-    public Mono<Void> updateStatus(final String code, final String value) {
+    public Mono<?> updateStatus(final String code, final String value) {
         return repository.findByCode(code)
                 .flatMap(p -> {
                     var status = Status.toEnum(value);
                     p.setStatus(status.getDescription());
                     return repository.save(p);
-                }).flatMap(r -> Mono.empty());
+                }).flatMap(r -> Mono.empty())
+                .onErrorResume(e -> Mono.error(new ProductUpdateException("Fail update product. Detalhes " + e.getMessage())));
     }
 
     public Mono<ProductResponseDTO> create(final ProductRequestDTO dto) {

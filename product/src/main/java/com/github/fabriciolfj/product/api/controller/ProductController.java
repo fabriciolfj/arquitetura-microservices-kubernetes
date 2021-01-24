@@ -2,15 +2,10 @@ package com.github.fabriciolfj.product.api.controller;
 
 import com.github.fabriciolfj.product.api.dto.request.ProductRequestDTO;
 import com.github.fabriciolfj.product.api.dto.response.ProductResponseDTO;
-import com.github.fabriciolfj.product.api.exceptions.ProductCreateException;
-import com.github.fabriciolfj.product.api.exceptions.ProductNotFoundException;
-import com.github.fabriciolfj.product.api.exceptions.StatusNotFoundException;
 import com.github.fabriciolfj.product.domain.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,18 +57,8 @@ public class ProductController {
     }
 
     @PutMapping("/{code}/{status}")
-    public Mono<Void> updateStatus(@PathVariable("code") final String code, @PathVariable("status") final String status) {
+    public Mono<?> updateStatus(@PathVariable("code") final String code, @PathVariable("status") final String status) {
         return service.updateStatus(code, status);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<String> handle(final ProductNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<String> handle(final StatusNotFoundException e ) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
 }
